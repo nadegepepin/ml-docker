@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+       - db_data:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: slant
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+
+  notebook:
+    build: .
+    command: jupyter notebook --ip 0.0.0.0 --notebook-dir=/src --allow-root
+    volumes:
+      - ..:/src
+      - ./config:/root
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db
+      
+  python-cli:
+    build: .
+    command: bash
+    working_dir: /src/Slant
+    volumes:
+      - ..:/src
+    links:
+      - db
+
+volumes:
+  db_data:
+
+
+
