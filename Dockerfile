@@ -12,6 +12,8 @@ RUN conda install pymysql -y
 RUN conda install scipy matplotlib scikit-learn keras tensorflow pyyaml hdf5 h5py -y
 RUN conda install pillow 
 RUN conda install imageio -y
-RUN conda install -c conda-forge nltk_data
+RUN conda install -c conda-forge nltk_data pdpbox catboost -y
+RUN conda install python-graphviz -y
+
 
 
