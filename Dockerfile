@@ -14,6 +14,10 @@ RUN conda install pillow
 RUN conda install imageio -y
 RUN conda install -c conda-forge nltk_data pdpbox catboost -y
 RUN conda install python-graphviz -y
+RUN conda install -c anaconda pytables -y
+RUN conda install -c conda-forge filelock -y
+RUN conda install -c anaconda more-itertools -y
+
 
 
 
