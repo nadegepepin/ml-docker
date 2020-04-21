@@ -24,15 +24,21 @@ services:
       - "8888:8888"
     depends_on:
       - db
+    environment:
+      - TFHUB_CACHE_DIR=/src/capstone/data/tf-hub-cache
       
+
   python-cli:
     build: .
-    command: bash
-    working_dir: /src/Slant
+    command: bash 
     volumes:
       - ..:/src
-    links:
-      - db
+      - ./config:/root
+      - ./log:/var/log
+    working_dir: /src/
+    environment:
+      - TFHUB_CACHE_DIR=/src/capstone/data/tf-hub-cache
+
 
 volumes:
   db_data:

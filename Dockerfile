@@ -17,7 +17,8 @@ RUN conda install python-graphviz -y
 RUN conda install -c anaconda pytables -y
 RUN conda install -c conda-forge filelock -y
 RUN conda install -c anaconda more-itertools -y
-
-
+RUN apt-get install -y zip unzip
+RUN conda install -c anaconda tensorflow-hub
+RUN pip install bert-for-tf2
 
 
