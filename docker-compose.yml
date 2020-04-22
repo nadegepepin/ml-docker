@@ -25,7 +25,7 @@ services:
     depends_on:
       - db
     environment:
-      - TFHUB_CACHE_DIR=/src/capstone/data/tf-hub-cache
+      - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
       
 
   python-cli:
@@ -37,7 +37,7 @@ services:
       - ./log:/var/log
     working_dir: /src/
     environment:
-      - TFHUB_CACHE_DIR=/src/capstone/data/tf-hub-cache
+      - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
 
 
 volumes:
