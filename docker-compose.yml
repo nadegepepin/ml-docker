@@ -22,11 +22,8 @@ services:
       - ./log:/var/log
     ports:
       - "8888:8888"
-    depends_on:
-      - db
     environment:
       - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
-      
 
   python-cli:
     build: .
@@ -38,6 +35,18 @@ services:
     working_dir: /src/
     environment:
       - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
+
+  tensorboard:
+    build: .
+    command: ["tensorboard", "--logdir=/var/log", "--bind_all"]
+    volumes:
+      - ./log:/var/log
+    working_dir: /src/
+    ports:
+      - "6006:6006"
+    environment:
+      - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
+
 
 
 volumes:
