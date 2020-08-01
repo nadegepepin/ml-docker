@@ -38,7 +38,7 @@ services:
 
   tensorboard:
     build: .
-    command: ["tensorboard", "--logdir=/var/log", "--bind_all"]
+    command: ["tensorboard", "--logdir=/var/log/TensorBoard", "--bind_all"]
     volumes:
       - ./log:/var/log
     working_dir: /src/
@@ -48,6 +48,12 @@ services:
       - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
 
 
+  tensorboard-inspect:
+    image: ml-docker_tensorboard
+    command: ["tensorboard", "--logdir=/var/log/TensorBoard", "--inspect"]
+    volumes:
+      - ./log:/var/log
+    working_dir: /src/
 
 volumes:
   db_data:
