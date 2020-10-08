@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
   db:
@@ -14,7 +14,9 @@ services:
       - "3306:3306"
 
   notebook:
-    build: .
+    build: 
+      context: .
+      target: base
     command: jupyter notebook --ip 0.0.0.0 --notebook-dir=/src --allow-root
     volumes:
       - ..:/src
@@ -26,7 +28,9 @@ services:
       - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
 
   python-cli:
-    build: .
+    build: 
+      context: .
+      target: base
     command: bash 
     volumes:
       - ..:/src
@@ -36,8 +40,38 @@ services:
     environment:
       - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
 
+
+  capstone-runtime:
+    build: 
+      context: ../capstone-prototype/
+      target: prod
+    command: bash
+    volumes:
+      - ../capstone-prototype/data:/opt/ml/processing/data
+      - ../capstone-prototype/models:/opt/ml/processing/models
+
+  capstone-runtime-gpu:
+    build: 
+      context: ../capstone-prototype/
+      target: prod-gpu
+    command: bash
+    volumes:
+      - ../capstone-prototype/data:/opt/ml/processing/data
+      - ../capstone-prototype/models:/opt/ml/processing/models
+
+  capstone-runtime-cpu:
+    build: 
+      context: ../capstone-prototype/
+      target: prod-cpu
+    command: bash
+    volumes:
+      - ../capstone-prototype/data:/opt/ml/processing/data
+      - ../capstone-prototype/models:/opt/ml/processing/models
+
   tensorboard:
-    build: .
+    build: 
+      context: .
+      target: base
     command: ["tensorboard", "--logdir=/var/log/TensorBoard", "--bind_all"]
     volumes:
       - ./log:/var/log
@@ -48,12 +82,52 @@ services:
       - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
 
 
+  tensorboard-s3:
+    build: 
+      context: .
+      target: base
+    command: ["tensorboard", "--logdir=s3://sagemaker-studio-3fqzdvw0h4y/capstone-prototype/data/tensorboard/train/", "--bind_all"]
+    volumes:
+      - ~/.aws:/root/.aws
+    working_dir: /src/
+    ports:
+      - "6006:6006"
+    environment:
+      - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
   tensorboard-inspect:
     image: ml-docker_tensorboard
     command: ["tensorboard", "--logdir=/var/log/TensorBoard", "--inspect"]
     volumes:
       - ./log:/var/log
     working_dir: /src/
+
+  python-cli-gpu:
+    build: 
+      context: aws
+      target: base_gpu
+    command: bash 
+    volumes:
+      - ..:/src
+      - ./config:/root
+      - ./log:/var/log
+    working_dir: /src/
+    environment:
+      - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
+
+  python-cli-cpu:
+    build: 
+      context: aws
+      target: base_cpu
+    command: bash 
+    volumes:
+      - ..:/src
+      - ./config:/root
+      - ./log:/var/log
+    working_dir: /src/
+    environment:
+      - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
+
+
 
 volumes:
   db_data:

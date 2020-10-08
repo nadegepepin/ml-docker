@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:latest
+FROM continuumio/miniconda3:latest as base
 
 RUN conda update --all
 RUN conda install numpy jupyter -y
@@ -20,5 +20,5 @@ RUN conda install -c anaconda more-itertools -y
 RUN apt-get install -y zip unzip
 RUN conda install -c anaconda tensorflow-hub
 RUN pip install bert-for-tf2
-
-
+RUN pip install dynaconf
+RUN pip install guppy3
