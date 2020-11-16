@@ -127,7 +127,20 @@ services:
     environment:
       - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
 
-
+  flask-app:
+    build: 
+      context: .
+      target: base
+    command: ["python", "app/app.py"] 
+    volumes:
+      - ..:/src
+      - ./config:/root
+      - ./log:/var/log
+    working_dir: /src/capstone-prototype/src/
+    ports:
+      - "5000:5000"
+    environment:
+      - TFHUB_CACHE_DIR=/src/capstone-prototype/data/tf-hub-cache
 
 volumes:
   db_data:

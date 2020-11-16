@@ -22,3 +22,4 @@ RUN conda install -c anaconda tensorflow-hub
 RUN pip install bert-for-tf2
 RUN pip install dynaconf
 RUN pip install guppy3
+RUN pip install flask Flask-Reuploaded
